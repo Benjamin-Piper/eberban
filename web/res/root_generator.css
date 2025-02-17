@@ -6,3 +6,11 @@ p {
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
 }
+
+#roots {
+    display: grid;
+    grid-template: 1fr 1fr / 1fr 1fr;
+    grid-gap: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}

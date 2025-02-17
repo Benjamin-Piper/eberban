@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="./res/reset.css">
 	<link rel="stylesheet" href="./res/common.css">
 	<link rel="stylesheet" href="./res/root_generator.css">
+	<script src="./res/wp_root_generator.js"></script>
 </head>
 <body>
 	<div class="wrapper">
@@ -27,7 +28,32 @@
 					Words are classified by length, shorter forms being
 					preferred for more common concepts.
 				</p>
+				<div id="transitivity">
+					<button name="intransitive" onclick="bundle.refresh('intransitive')">Intransitive</button>
+					<button name="transitive" onclick="bundle.refresh('transitive')">Transitive</button>
+				</div>
 			</section>
+			<section id="roots">
+				<div>
+					<h3 class="text-center">Short</h3>
+					<ul id="short-roots" class="text-center"></ul>
+				</div>
+				<div>
+					<h3 class="text-center">Medium</h3>
+					<ul id="medium-roots" class="text-center"></ul>
+				</div>
+				<div>
+					<h3 class="text-center">Long</h3>
+					<ul id="long-roots" class="text-center"></ul>
+				</div>
+				<div>
+					<h3 class="text-center">Longer</h3>
+					<ul id="longer-roots" class="text-center"></ul>
+				</div>
+			</section>
+			<script>
+				bundle.refresh();
+			</script>
 		</main>
 	</div>
 </body>
