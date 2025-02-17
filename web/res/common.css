@@ -1,0 +1,15 @@
+/* Common styles all web/*.html files use */
+
+a {
+    color: #0088cc;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.wrapper {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 8px;
+}

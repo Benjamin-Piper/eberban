@@ -12,10 +12,6 @@ section:last-of-type {
     margin-bottom: 0;
 }
 
-a {
-    color: #0088cc;
-}
-
 li h2 {
     font-size: 1.125rem;
     margin-bottom: 0.75rem;
@@ -53,16 +49,6 @@ button a:hover {
 
 #logo {
     width: 200px;
-}
-
-.wrapper {
-    max-width: 940px;
-    margin: 0 auto;
-    padding: 8px;
-}
-
-.text-center {
-    text-align: center;
 }
 
 .flex {
