@@ -28,31 +28,97 @@
 					Words are classified by length, shorter forms being
 					preferred for more common concepts.
 				</p>
-				<div id="transitivity">
-					<button name="intransitive" onclick="bundle.refresh('intransitive')">Intransitive</button>
-					<button name="transitive" onclick="bundle.refresh('transitive')">Transitive</button>
+				<div>
+					<button id="intransitive" onclick="bundle.refresh('intransitive')">Intransitive</button>
+					<button id="transitive" onclick="bundle.refresh('transitive')">Transitive</button>
 				</div>
 			</section>
-			<section id="roots">
-				<div>
-					<h3 class="text-center">Short</h3>
-					<ul id="short-roots" class="text-center"></ul>
+			<section class="carousel">
+				<div class="carousel-viewport-container">
+					<ol class="carousel-viewport">
+						<li class="carousel-column">
+							<h3 class="text-center">Short</h3>
+							<ul id="short-roots" class="text-center"></ul>
+						</li>
+						<li class="carousel-column">
+							<h3 class="text-center">Medium</h3>
+							<ul id="medium-roots" class="text-center"></ul>
+						</li>
+						<li class="carousel-column">
+							<h3 class="text-center">Long</h3>
+							<ul id="long-roots" class="text-center"></ul>
+						</li>
+						<li class="carousel-column">
+							<h3 class="text-center">Longer</h3>
+							<ul id="longer-roots" class="text-center"></ul>
+						</li>
+					</ol>
+					<button id="refresh" onclick="bundle.refresh()">🔁</button>
+					<button id="prev">◀️</button>
+					<button id="next">▶️</button>
 				</div>
-				<div>
-					<h3 class="text-center">Medium</h3>
-					<ul id="medium-roots" class="text-center"></ul>
-				</div>
-				<div>
-					<h3 class="text-center">Long</h3>
-					<ul id="long-roots" class="text-center"></ul>
-				</div>
-				<div>
-					<h3 class="text-center">Longer</h3>
-					<ul id="longer-roots" class="text-center"></ul>
-				</div>
+
+				<ol class="carousel-nav">
+					<li>
+						<button onclick="location.href='#short-roots'">
+							11111
+						</button>
+					</li>
+					<li>
+						<button onclick="goToMiddleTwoColumns()">
+							2222
+						</button>
+					</li>
+					<li>
+						<button onclick="location.href='#longer-roots'">
+							333333
+						</button>
+					</li>
+				</ol>
 			</section>
 			<script>
-				bundle.refresh();
+				// TODO move this all into another JS file rip
+
+				let offScreenElement = null;
+				function assignOffscreenElement(entries) {
+					for (const entry of entries) {
+						if (!entry.isIntersecting) {
+							offScreenElement = entry.target;
+						}
+					}
+				}
+				const observer = new IntersectionObserver(
+					assignOffscreenElement,
+					{ 
+						root: document.getElementById("carousel-viewport"),
+						threshold: 1,
+					},
+				);
+				observer.observe(document.getElementById("medium-roots"));
+				observer.observe(document.getElementById("long-roots"));
+				const carouselViewPort = document.getElementById("carousel-viewport");
+
+				// todo go to lefty left
+
+				function goToMiddleTwoColumns(x) {
+					console.log(x)
+					location.href = `#${offScreenElement?.id}`;
+				}
+
+				// todo go to righty right
+
+				// todo make adjacent function that will left me go "prev" and "right"
+				// it will access a global index and a global list of functions and then execute the next function in the list depending on index
+
+				// Do not generate roots with every refresh.
+				// Only with the first visit and button presses.
+				// TODO
+				// this will involve storing the roots in localstorage
+				//if (localStorage.getItem("transitivity") === null) {
+					bundle.refresh();
+				//} else {
+				//	; // loadRoots; but this logic can be relegated to root_generator.js
+				//}
 			</script>
 		</main>
 	</div>

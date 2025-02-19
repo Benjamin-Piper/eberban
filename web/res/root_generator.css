@@ -7,10 +7,76 @@ p {
     margin-bottom: 1.25rem;
 }
 
-#roots {
-    display: grid;
-    grid-template: 1fr 1fr / 1fr 1fr;
-    grid-gap: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+ol, ol li {
+    list-style: none;
 }
+
+#intransitive:disabled, #transitive:disabled {
+    cursor: not-allowed;
+    background-color: #a5a5a5;
+    background-image: none;
+}
+
+/* Carousel logic begins here. */
+/* Adapted from https://codepen.io/Schepp/pen/WNbQByE */
+
+.carousel-viewport-container {
+    /* Anchor. */
+    position: relative;
+}
+
+.carousel-viewport {
+    display: flex;
+    /* Scroll horizontally, but hide the scrollbar. */
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+}
+
+.carousel-column {
+    /* Show only 2 columns. */
+    flex: 0 0 50%;
+}
+
+#prev {
+    top: 50%;
+    left: 0;
+    /* Centre-left content inside anchor. */
+    transform: translate(0, -50%);
+}
+
+#prev, #refresh, #next {
+    width: fit-content;
+    font-size: 2rem;
+    user-select: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    /* Go to anchor and be outside of normal document flow. */
+    position: absolute;
+
+}
+
+#refresh {
+    /* Centre content inside anchor. */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#next {
+    /* Centre-right content inside anchor. */
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+}
+
+.carousel-nav {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* TODO intransitive transitive button stylings */
+/* TODO adjusting size of viewport messes up the two column layout. investigate */
+/* TODO carousel-nav button stylings */

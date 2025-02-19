@@ -11,8 +11,14 @@ const {
 } = require('../src/root_generation/index');
 export default dictionary;
 
+
+/* Transitivity */
+
+
 const is_intransitive = (s) => s === "intransitive";
+
 const is_transitive = (s) => s === "transitive";
+
 const is_valid = (s) => is_intransitive(s) || is_transitive(s);
 
 function get_transitivity(transitive_string) {
@@ -24,14 +30,25 @@ function get_transitivity(transitive_string) {
     }
 }
 
-function update_buttons(transitivity) {
-    const div = document.getElementById("transitivity");
-    div.classList.toggle("transitive", is_transitive(transitivity));
 
-    // todo scrap this. no need for transitivity id
-    // just need ids for the buttons transitive and intransitive respectively
-    // disable the corresponding button and reenable the other one. simple simple
+/* Buttons */
+
+
+function update_buttons(transitivity) {
+    const intransitiveButton = document.getElementById("intransitive");
+    const transitiveButton = document.getElementById("transitive");
+    if (is_transitive(transitivity)) {
+        transitiveButton.disabled = true;
+        intransitiveButton.disabled = false;
+    } else {
+        transitiveButton.disabled = false;
+        intransitiveButton.disabled = true;
+    }
 }
+
+
+/* Root generation */
+
 
 function* generate_roots(root_fn) {
     while (true) {
@@ -58,9 +75,12 @@ function update_root_list(root_list_id, root_fn) {
     }
 }
 
+
+/* ENTRY */
+
+
 export function refresh(transitive_string) {
     const transitivity = get_transitivity(transitive_string);
-    localStorage.setItem("transitivity", transitivity);
     update_buttons(transitivity);
     if (is_transitive(transitivity)) {
         update_root_list("short-roots", get_random_three_letter_transitive_root);
@@ -73,5 +93,7 @@ export function refresh(transitive_string) {
         update_root_list("long-roots", get_random_five_letter_intransitive_root);
         update_root_list("longer-roots", get_random_six_letter_intransitive_root);
     }
+    localStorage.setItem("transitivity", transitivity);
+    
 }
 
