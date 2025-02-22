@@ -54,13 +54,13 @@
 						</li>
 					</ol>
 					<button id="refresh" onclick="bundle.refresh()">🔁</button>
-					<button id="prev">◀️</button>
-					<button id="next">▶️</button>
+					<button id="prev" onclick="goAdjacent('left')">◀️</button>
+					<button id="next" onclick="goAdjacent('right')">▶️</button>
 				</div>
 
 				<ol class="carousel-nav">
 					<li>
-						<button onclick="location.href='#short-roots'">
+						<button onclick="goToLeftMostColumns()"">
 							11111
 						</button>
 					</li>
@@ -70,7 +70,7 @@
 						</button>
 					</li>
 					<li>
-						<button onclick="location.href='#longer-roots'">
+						<button onclick="goToRightMostColumns()">
 							333333
 						</button>
 					</li>
@@ -98,17 +98,50 @@
 				observer.observe(document.getElementById("long-roots"));
 				const carouselViewPort = document.getElementById("carousel-viewport");
 
-				// todo go to lefty left
+				// spaghetti code alert!! TODO clean this up. will be easier
+				// to reason about this when i'm in another file
+				// might need a diagram
 
-				function goToMiddleTwoColumns(x) {
-					console.log(x)
+				function goToMiddleTwoColumns() {
 					location.href = `#${offScreenElement?.id}`;
 				}
 
-				// todo go to righty right
+				function goToLeftMostColumns() {
+					location.href = "#short-roots";
+					tmpIndex = 0;
+				}
 
-				// todo make adjacent function that will left me go "prev" and "right"
-				// it will access a global index and a global list of functions and then execute the next function in the list depending on index
+				function goToRightMostColumns() {
+					location.href = "#longer-roots";
+					tmpIndex = 2;
+				}
+
+				// todo fix all the names
+				const tmpName = [
+					goToLeftMostColumns,
+					goToMiddleTwoColumns,
+					goToRightMostColumns
+				]
+				let tmpIndex = 0;
+				function goAdjacent(direction) {
+					// credit: https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
+					const mod = (n, modulus) => ((n % modulus) + modulus) % modulus;
+					if (direction === "left") {
+						tmpIndex = mod(tmpIndex - 1, tmpName.length);
+
+					} else if (direction === "right") {
+						tmpIndex = mod(tmpIndex + 1, tmpName.length);
+					}
+					tmpName[tmpIndex]();
+				}
+
+				let onFinishedResizingId;
+				window.onresize = function() {
+					clearTimeout(onFinishedResizingId);
+					onFinishedResizingId = setTimeout(tmpName[tmpIndex], 100);
+				}
+
+				// todo cache the columns you're on
 
 				// Do not generate roots with every refresh.
 				// Only with the first visit and button presses.
