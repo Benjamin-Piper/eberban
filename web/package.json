@@ -1,0 +1,20 @@
+{
+  "name": "eberban",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "eberban language main library",
+  "author": "mia entropy",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eberban/eberban"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^6.1.1"
+  }
+}
