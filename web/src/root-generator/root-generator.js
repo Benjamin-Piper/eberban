@@ -1,4 +1,4 @@
-import dictionary from "../../dictionary/en.yaml";
+import dictionary from "../../../dictionary/en.yaml";
 import { 
     get_random_three_letter_intransitive_root,
     get_random_four_letter_intransitive_root,
