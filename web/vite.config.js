@@ -5,6 +5,7 @@ import ViteYaml from "@modyfi/vite-plugin-yaml";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // Adapted from https://github.com/vitejs/vite/issues/6596#issuecomment-1651355986
+// Note: this only changes the request, it does NOT change the url on the browser.
 const AppendTrailingUrlSlash = () => {
     return {
         name: "append-trailing-url-slash",
@@ -15,18 +16,24 @@ const AppendTrailingUrlSlash = () => {
                 if (!req.url) {
                     return next();
                 }
-                const startWith = (s) => "^" + s;
+                const start = "^";
+                const end = "$";
                 const group = (s) => `(?:${s})`;
                 const ignore = (s) => `[^${s}]`;
                 const zeroOrMore = (s) => s + "*";
                 const oneOrMore = (s) => s + "+";
-                const regex = new RegExp(
-                    startWith("/") +
-                    zeroOrMore(group(oneOrMore(ignore("@")) + "/")) +
-                    oneOrMore(ignore("@./"))
+                const regexp = new RegExp(
+                    start +
+                        "/" +
+                        zeroOrMore(group(oneOrMore(ignore("@")) + "/")) +
+                        oneOrMore(ignore("@./")) +
+                        end,
+                    "g",
                 );
-                console.log(regex);
-                // todo continue adapting this. i'm nearly there
+                if (regexp.test(req.url)) {
+                    req.url += "/"
+                }
+                next();
             });
         },
     }
@@ -46,8 +53,3 @@ export default {
     publicDir: "../images", // need to go one level up because our root is at src.
     root: "src",
 };
-
-// todo multipage build with root-geneartor
-// https://github.com/vitejs/vite/pull/14756
-// also figure out how to get trailing slashes and non-traliilng slashes working for urls
-// i might have to downgrade to version 5 of vite
