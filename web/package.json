@@ -11,8 +11,8 @@
   },
   "scripts": {
     "dev": "vite src",
-    "build": "vite build src --outDir ../../",
-    "preview": "vite preview src --outDir ../../"
+    "build": "vite build src --outDir ../dist --emptyOutDir",
+    "preview": "vite preview src --outDir ../dist"
   },
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.1.1",

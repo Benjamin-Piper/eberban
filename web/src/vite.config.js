@@ -41,8 +41,9 @@ const AppendTrailingUrlSlash = () => {
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-    appType: "mpa", // multi-page application
+    appType: "mpa", // Multi-page application.
     build: {
+        // The output directory specified within package.json via Vite CLI.
         rollupOptions: {
             input: {
                 "main": resolve(__dirname, "index.html"),
@@ -51,6 +52,6 @@ export default defineConfig({
         },
     },
     plugins: [AppendTrailingUrlSlash(), ViteYaml()],
-    // the root is specified within package.json scripts via Vite CLI
+    // The root is specified within package.json scripts via Vite CLI.
     publicDir: "../images",
 });
