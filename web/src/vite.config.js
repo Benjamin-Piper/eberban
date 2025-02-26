@@ -51,6 +51,6 @@ export default defineConfig({
         },
     },
     plugins: [AppendTrailingUrlSlash(), ViteYaml()],
-    root: "src",
+    // the root is specified within package.json scripts via Vite CLI
     publicDir: "../images",
 });
