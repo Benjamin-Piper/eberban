@@ -4,7 +4,11 @@ import { defineConfig } from "vite"
 import ViteYaml from "@modyfi/vite-plugin-yaml";
 
 // Adapted from https://github.com/vitejs/vite/issues/6596#issuecomment-1651355986
-// Note: this only changes the request, it does NOT change the url on the browser.
+// Note (vite dev): This only changes the request, it does NOT change the url on
+// the browser.
+// Note (vite preview): Nothing happens.
+// Note (GitHub Pages): GitHub Pages adds trailing slash itself in the browser.
+//                      https://github.com/slorber/trailing-slash-guide
 const AppendTrailingUrlSlash = () => {
     return {
         name: "append-trailing-url-slash",
@@ -48,6 +52,7 @@ export default defineConfig({
             input: {
                 "main": resolve(__dirname, "index.html"),
                 "root-generator": resolve(__dirname, "root-generator/index.html"),
+                "visual-parser": resolve(__dirname, "visual-parser/index.html"),
             },
         },
     },

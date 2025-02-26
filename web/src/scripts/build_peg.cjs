@@ -22,14 +22,9 @@ try {
 	throw e;
 }
 var fd = fs.openSync(dst, 'w+');
-var buffer = new Buffer.from('var camxes = ');
+var buffer = new Buffer.from('export const camxes = ');
 fs.writeSync(fd, buffer, 0, buffer.length);
 buffer = new Buffer.from(camxes);
-fs.writeSync(fd, buffer, 0, buffer.length);
-
-buffer = new Buffer.from(`
-module.exports.camxes = camxes;
-`);
 fs.writeSync(fd, buffer, 0, buffer.length);
 fs.closeSync(fd);
 var diff_t = process.hrtime(start_t);

@@ -10,7 +10,6 @@
 	<link href="/legacy/bootstrap-legacy.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script type="module" src="/legacy/bootstrap-legacy.js"></script>
-	<script type="module" src="./parser.js"></script>
 </head>
 
 <body>
@@ -73,11 +72,11 @@
 	// });
 
 	// parse on page reload
-	import { parse } from "./parser";
+	import { parse } from "./visual-parser";
 
 	$('#input_textarea').bind("keyup",
       function (e) {
-        bundle.parse();
+        parse();
       });
 </script>
 

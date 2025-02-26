@@ -1,9 +1,46 @@
+function among(v, s) {
+    var i = 0;
+    while (i < s.length) if (s[i++] == v) return true;
+    return false;
+}
+
 export function get_random_item(list) {
     return list[Math.floor(Math.random() * list.length)];
 }
 
+export function is_array(v) {
+    return Object.prototype.toString.call(v) === '[object Array]';
+}
+
+export function is_family(v) {
+    if (!is_string(v)) return false;
+    return 0 == v.search(/^[BCDFGJKLMNPRSTVXZ]?([AEIOUH])+$/g);
+}
+
+export function is_number(v) {
+	return Object.prototype.toString.call(v) === '[object Number]';
+}
+
 export function is_string(v) {
     return Object.prototype.toString.call(v) === '[object String]';
+}
+
+/* Checks whether the argument node is a target for pruning. */
+function is_target_node(n) {
+    return (among(n[0], SPECIAL_FAMILIES) || is_family(n[0]));
+}
+
+/* This function returns the string resulting from the recursive concatenation of
+ * all the leaf elements of the parse tree argument (except node names). */
+function join_expr(n) {
+    if (n.length < 1) return "";
+    var s = "";
+    var i = is_array(n[0]) ? 0 : 1;
+    while (i < n.length) {
+        s += is_string(n[i]) ? n[i] : join_expr(n[i]);
+        i++;
+    }
+    return s;
 }
 
 export function remove_spaces(tree) {
@@ -59,3 +96,13 @@ export function remove_morphology(pt) {
     }
     return pt;
 }
+
+export const SPECIAL_FAMILIES = [
+    "particle_form",
+    "root_form",
+    "freeform_content",
+    "foreign_quote_content",
+    "foreign_quote_open",
+    "foreign_quote_close",
+    "spelling_quote_unit_2",
+];

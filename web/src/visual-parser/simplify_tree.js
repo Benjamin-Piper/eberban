@@ -180,5 +180,3 @@ function simplifyArrayOfTrees(parse) {
 
 	return result;
 }
-
-module.exports.simplifyTree = simplifyTree;

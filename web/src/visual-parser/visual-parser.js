@@ -1,4 +1,4 @@
-export { camxes } from '../grammar/eberban';
+import { camxes } from '../grammar/eberban';
 export { postprocessing } from './process_parse_tree';
 
 import { remove_morphology, remove_spaces } from '../scripts/utils';
