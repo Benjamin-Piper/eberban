@@ -10,9 +10,9 @@
     "url": "https://github.com/eberban/eberban"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "vite src",
+    "build": "vite build src --outDir ../",
+    "preview": "vite preview src --outDir ../"
   },
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.1.1",
