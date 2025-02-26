@@ -10,12 +10,18 @@
     "url": "https://github.com/eberban/eberban"
   },
   "scripts": {
-    "dev": "vite src",
-    "build": "vite build src --outDir ../dist --emptyOutDir",
+    "task-peg_to_pegjs": "node ./src/scripts/peg_to_pegjs.cjs ./src/grammar/eberban.peg",
+    "task-build_peg": "node ./src/scripts/build_peg.cjs ./src/grammar/eberban.pegjs",
+    "task-vite-dev": "vite src",
+    "task-vite-build": "vite build src --outDir ../dist --emptyOutDir",
     "preview": "vite preview src --outDir ../dist"
+  },
+  "dependencies": {
+    "pegjs": "^0.10.0"
   },
   "devDependencies": {
     "@modyfi/vite-plugin-yaml": "^1.1.1",
+    "npm-run-all": "^4.1.5",
     "vite": "^6.1.1"
   }
 }

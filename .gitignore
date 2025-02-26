@@ -1,6 +1,9 @@
-# Books
+# Books.
 books/*/book
 
-# Web
+# Web.
 web/dist
 web/node_modules
+## Only keep source PEG file.
+web/src/grammar/eberban.js
+web/src/grammar/eberban.pegjs
