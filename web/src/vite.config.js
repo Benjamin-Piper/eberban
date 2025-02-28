@@ -47,7 +47,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
     appType: "mpa", // Multi-page application.
     build: {
-        // The output directory specified within package.json via Vite CLI.
+        // The output directory is specified within package.json via Vite CLI.
+        // The reference grammar is within this repo but external to this web
+        // application, so it is not listed as an input.
         rollupOptions: {
             input: {
                 "main": resolve(__dirname, "index.html"),
