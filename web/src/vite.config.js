@@ -46,6 +46,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
     appType: "mpa", // Multi-page application.
+    // The base is specified within package.json scripts via Vite CLI.
     build: {
         // The output directory is specified within package.json via Vite CLI.
         // The reference grammar is within this repo but external to this web
