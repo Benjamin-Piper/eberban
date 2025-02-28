@@ -53,6 +53,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 "main": resolve(__dirname, "index.html"),
+                "dictionary": resolve(__dirname, "dictionary/index.html"),
                 "root-generator": resolve(__dirname, "root-generator/index.html"),
                 "textual-parser": resolve(__dirname, "textual-parser/index.html"),
                 "visual-parser": resolve(__dirname, "visual-parser/index.html"),
