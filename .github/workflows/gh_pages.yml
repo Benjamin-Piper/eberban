@@ -49,20 +49,20 @@ jobs:
         
       - name: Install NPM dependencies
         run: |
-          cd node
+          cd web
           npm install
           cd ..
 
       - name: Build JS bundles
         run: |
-          cd node
-          npm run build
+          cd web
+          npm run build-to-deploy
           cd ..
 
       - name: Commit changes to gh-pages
         run: |
           rm -f .gitignore
-          echo "node_modules" > .gitignore
+          rm -rf web/
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
           git checkout -b tmp/gh-pages
