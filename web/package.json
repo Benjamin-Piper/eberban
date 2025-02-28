@@ -14,8 +14,10 @@
     "task-pegjs_to_js": "node ./src/scripts/peg/pegjs_to_js.cjs ./src/grammar/eberban.pegjs",
     "task-vite-dev": "vite src",
     "task-vite-build": "vite build src --outDir ../dist --emptyOutDir",
+    "task-vite-build-to-deploy": "vite build src --outDir ../..",
     "dev": "run-s task-peg_to_pegjs task-pegjs_to_js task-vite-dev",
     "build": "run-s task-peg_to_pegjs task-pegjs_to_js task-vite-build",
+    "build-to-deploy": "run-s task-peg_to_pegjs task-pegjs_to_js task-vite-build-to-deploy",
     "preview": "vite preview src --outDir ../dist"
   },
   "dependencies": {
