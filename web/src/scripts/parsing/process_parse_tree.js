@@ -54,7 +54,7 @@
 
 if (typeof alert !== 'function') alert = console.log; // For Node.js
 
-import { is_array, is_family, is_string, is_number, SPECIAL_FAMILIES } from '../scripts/utils';
+import { is_array, is_family, is_string, is_number, SPECIAL_FAMILIES } from '../utils';
 
 /*
  * Main function.

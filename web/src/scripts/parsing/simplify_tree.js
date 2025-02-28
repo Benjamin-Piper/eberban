@@ -1,4 +1,4 @@
-import { is_string } from '../scripts/utils';
+import { is_string } from '../utils';
 
 // List of important types in eberban that we want to show up in the simplified
 // tree.
