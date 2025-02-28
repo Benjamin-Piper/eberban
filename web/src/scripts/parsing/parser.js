@@ -1,9 +1,9 @@
-import { camxes } from '../grammar/eberban';
-export { postprocessing } from '../scripts/parsing/process_parse_tree';
+import { camxes } from '../../grammar/eberban';
+export { postprocessing } from './process_parse_tree';
 
-import { remove_morphology, remove_spaces } from '../scripts/utils';
-import { simplifyTree } from '../scripts/parsing/simplify_tree';
-import dictionary from '../../../dictionary/en.yaml';
+import { remove_morphology, remove_spaces } from '../utils';
+import { simplifyTree } from './simplify_tree';
+import dictionary from '../../../../dictionary/en.yaml';
 
 const hideTitleList = [
 	'paragraph',
