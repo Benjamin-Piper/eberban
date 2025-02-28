@@ -40,33 +40,31 @@ If you would like to get involved, please also consider joining our
 
 ## How tos
 
-### How to update a book -- todo fix these instructions especially warning down below
+### How to update a book
 
-Books are made using [`mdbook`] and a few extensions which are written in [Rust].
-First [install Rust] then run the following commands to install the required
-binaries:
+Ensure you have [Rust] installed on your machine.
 
-```
-cargo install mdbook
-cargo install mdbook-linkcheck
-cargo install mdbook-regex-replacer
-```
+[Rust]: https://www.rust-lang.org/tools/install
 
-You can then open a terminal in the book folder (in which `book.toml` is
-located) and run `mdbook serve`. This will run a web server that will reflect
-changes that you make in the .md files.
+1. Install the dependencies
+  ```
+  cargo install mdbook
+  cargo install mdbook-linkcheck
+  cargo install mdbook-regex-replacer
+  ```
+2. Open a terminal and navigate one of the books folders (e.g., `books/refgram`).
+3. Run `mdbook serve`.
+
+The dev server is now running. Copy the localhost address and paste it into your
+browser to see your local copy of the website.
+
+The dev server will update this local website after every change you make.
 
 [`mdbook`]: https://lib.rs/crates/mdbook
-[install Rust]: https://www.rust-lang.org/tools/install
-
-
-> [!WARNING]
-> The following instructions assume that [Node.js and npm] are installed on your
-> machine.
-
-[Node.js and npm]: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
 ### How to add a new word to the dictionary
+
+Ensure you have [Node.js and npm] installed on your machine.
 
 1. Edit the dictionary YAML file (`dictionary/en.yaml`) and create a new entry for your word.
 2. Set the `id` field to `INSERT_WORD_ID`.
@@ -75,8 +73,11 @@ changes that you make in the .md files.
 
 ### How to update the website
 
+Ensure you have [Node.js and npm] installed on your machine.
+
 1. Open a terminal and navigate to the web folder.
-2. Run `npm run dev`.
+2. Run `npm i`.
+3. Run `npm run dev`.
 
 The dev server is now running. Copy the localhost address and paste it into your
 browser to see your local copy of the website.
@@ -87,7 +88,4 @@ The dev server will update this local website after every change you make.
 > You can locally check that the website builds properly by running
 > `npm run build` and then `npm run preview` to view the locally built website.
 
-# fix readme
-# setup github pages
-# then push
-# TODO^^^all this
+[Node.js and npm]: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
