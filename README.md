@@ -77,12 +77,16 @@ Ensure you have [Node.js and npm] installed on your machine.
 
 1. Open a terminal and navigate to the web folder.
 2. Run `npm i`.
-3. Run `npm run dev`.
+3. Run the dev server.
+  1. If you've made and/or are making changes to `web/src/grammar/eberban.peg`,
+     run `npm run peg-dev`. You will need to re-run this after each change made.
+  2. Otherwise, run `npm run dev`.
 
 The dev server is now running. Copy the localhost address and paste it into your
 browser to see your local copy of the website.
 
-The dev server will update this local website after every change you make.
+The dev server will update this local website after every change
+(except for the `eberban.peg`) you make.
 
 > [!TIP]
 > You can locally check that the website builds properly by running

@@ -34,7 +34,7 @@ const AppendTrailingUrlSlash = () => {
                     "g",
                 );
                 if (regexp.test(req.url)) {
-                    req.url += "/"
+                    req.url += "/";
                 }
                 next();
             });
@@ -46,11 +46,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
     appType: "mpa", // Multi-page application.
-    // The base is specified within package.json scripts via Vite CLI.
+    base: "/eberban/",
     build: {
         // The output directory is specified within package.json via Vite CLI.
-        // The reference grammar is within this repo but external to this web
-        // application, so it is not listed as an input.
         rollupOptions: {
             input: {
                 "main": resolve(__dirname, "index.html"),
@@ -58,6 +56,8 @@ export default defineConfig({
                 "root-generator": resolve(__dirname, "root-generator/index.html"),
                 "textual-parser": resolve(__dirname, "textual-parser/index.html"),
                 "visual-parser": resolve(__dirname, "visual-parser/index.html"),
+                // The reference grammar is within this repo but external to
+                // this web application, so it is not listed as an input.
             },
         },
     },

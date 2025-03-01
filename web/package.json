@@ -12,10 +12,10 @@
   "scripts": {
     "task-peg_to_pegjs": "node ./src/scripts/peg/peg_to_pegjs.cjs ./src/grammar/eberban.peg",
     "task-pegjs_to_js": "node ./src/scripts/peg/pegjs_to_js.cjs ./src/grammar/eberban.pegjs",
-    "task-vite-dev": "vite src",
     "task-vite-build": "vite build src --outDir ../dist --emptyOutDir",
-    "task-vite-build-to-deploy": "vite build src --base=/eberban/ --outDir ../..",
-    "dev": "run-s task-peg_to_pegjs task-pegjs_to_js task-vite-dev",
+    "task-vite-build-to-deploy": "vite build src --outDir ../..",
+    "dev": "vite src",
+    "peg-dev": "run-s task-peg_to_pegjs task-pegjs_to_js dev",
     "build": "run-s task-peg_to_pegjs task-pegjs_to_js task-vite-build",
     "build-to-deploy": "run-s task-peg_to_pegjs task-pegjs_to_js task-vite-build-to-deploy",
     "preview": "vite preview src --outDir ../dist"
