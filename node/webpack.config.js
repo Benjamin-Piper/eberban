@@ -4,7 +4,7 @@ module.exports = {
   mode: 'development',
   entry: {
     parser: './webpack/parser.js',
-    root_generator: './webpack/root_generator.js',
+    root_generator: ['./webpack/root_generator/root_generator.js', './webpack/root_generator/root_generator_carousel.js'],
     dictionary: './webpack/dictionary.js',
   },
   output: {
