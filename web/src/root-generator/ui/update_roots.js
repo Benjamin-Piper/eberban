@@ -35,14 +35,14 @@ function get_transitivity(transitive_string) {
 
 
 function update_buttons(transitivity) {
-    const intransitiveButton = document.getElementById("intransitive");
-    const transitiveButton = document.getElementById("transitive");
+    const intransitive_button = document.getElementById("intransitive");
+    const transitive_button = document.getElementById("transitive");
     if (is_transitive(transitivity)) {
-        transitiveButton.disabled = true;
-        intransitiveButton.disabled = false;
+        transitive_button.disabled = true;
+        intransitive_button.disabled = false;
     } else {
-        transitiveButton.disabled = false;
-        intransitiveButton.disabled = true;
+        transitive_button.disabled = false;
+        intransitive_button.disabled = true;
     }
 }
 
@@ -50,7 +50,7 @@ function update_buttons(transitivity) {
 /* Raots */
 
 
-function formatRoot(root) {
+function format_root(root) {
     const element = document.createElement("LI");
     element.innerText = root;
     return element;
@@ -59,7 +59,7 @@ function formatRoot(root) {
 function update_root_list(root_list_id, get_random_root_fn) {
     const root_list = document.getElementById(root_list_id);
     root_list.innerHTML = null;
-    root_list.append(...get_random_roots(get_random_root_fn).map(formatRoot))
+    root_list.append(...get_random_roots(get_random_root_fn).map(format_root))
 }
 
 
