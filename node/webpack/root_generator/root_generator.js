@@ -1,4 +1,4 @@
-const { dictionary_en: dictionary } = require('../src/dictionary');
+const { dictionary_en: dictionary } = require('../../src/dictionary');
 const { 
     get_random_three_letter_intransitive_root,
     get_random_four_letter_intransitive_root,
@@ -8,8 +8,8 @@ const {
     get_random_four_letter_transitive_root,
     get_random_five_letter_transitive_root,
     get_random_six_letter_transitive_root,
-} = require('../src/root_generation/index');
-export default dictionary;
+} = require('../../src/root_generation/index');
+// export default dictionary;
 
 
 /* Transitivity */
@@ -34,7 +34,7 @@ function get_transitivity(transitive_string) {
 /* Buttons */
 
 
-function update_buttons(transitivity) {
+export function update_buttons(transitivity) {
     const intransitiveButton = document.getElementById("intransitive");
     const transitiveButton = document.getElementById("transitive");
     if (is_transitive(transitivity)) {
@@ -79,7 +79,7 @@ function update_root_list(root_list_id, root_fn) {
 /* ENTRY */
 
 
-export function refresh(transitive_string) {
+export function refreshy(transitive_string) {
     const transitivity = get_transitivity(transitive_string);
     update_buttons(transitivity);
     if (is_transitive(transitivity)) {
@@ -96,4 +96,3 @@ export function refresh(transitive_string) {
     localStorage.setItem("transitivity", transitivity);
     
 }
-
