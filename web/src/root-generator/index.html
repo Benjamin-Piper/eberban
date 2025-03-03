@@ -57,6 +57,7 @@
 						</li>
 					</ol>
 					<button id="prev">◀️</button>
+					<button id="refresh">🔁</button>
 					<button id="next">▶️</button>
 				</div>
 		</main>
@@ -74,6 +75,7 @@
 
 		track_offscreen_middle_column_element();
 		document.getElementById("prev").addEventListener("click", () => go_to_adjacent("left"));
+		document.getElementById("refresh").addEventListener("click", () => update_roots());
 		document.getElementById("next").addEventListener("click", () => go_to_adjacent("right"));
 	</script>
 </body>
