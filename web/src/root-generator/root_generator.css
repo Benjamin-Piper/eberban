@@ -1,0 +1,39 @@
+/*               */
+/* Mobile styles. */
+/*               */
+
+h1 {
+    font-size: 2.5rem;
+}
+
+p {
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+ol, ol li {
+    list-style: none;
+}
+
+#transitivity-row {
+    display: flex;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
+}
+
+#intransitive, #transitive {
+    font-size: 1.75rem;
+}
+
+#intransitive:disabled, #transitive:disabled {
+    cursor: not-allowed;
+    background-color: #a5a5a5;
+    background-image: none;
+}
+
+/* Carousel styling begins here. */
+
+.carousel-viewport {
+    display: flex;
+    justify-content: space-between;
+}
