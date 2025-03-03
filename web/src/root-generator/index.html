@@ -37,33 +37,44 @@
 				</div>
 			</section>
 			<section>
-				<ol class="carousel-viewport">
-					<li>
-						<h3 class="text-center">Short</h3>
-						<ul id="short-roots" class="text-center"></ul>
-					</li>
-					<li>
-						<h3 class="text-center">Medium</h3>
-						<ul id="medium-roots" class="text-center"></ul>
-					</li>
-					<li>
-						<h3 class="text-center">Long</h3>
-						<ul id="long-roots" class="text-center"></ul>
-					</li>
-					<li>
-						<h3 class="text-center">Longer</h3>
-						<ul id="longer-roots" class="text-center"></ul>
-					</li>
-				</ol>
-			</section>
+				<div id="carousel-viewport-container">
+					<ol id="carousel-viewport">
+						<li class="carousel-column">
+							<h3 class="text-center">Short</h3>
+							<ul id="short-roots" class="text-center"></ul>
+						</li>
+						<li class="carousel-column">
+							<h3 class="text-center">Medium</h3>
+							<ul id="medium-roots" class="text-center"></ul>
+						</li>
+						<li class="carousel-column">
+							<h3 class="text-center">Long</h3>
+							<ul id="long-roots" class="text-center"></ul>
+						</li>
+						<li class="carousel-column">
+							<h3 class="text-center">Longer</h3>
+							<ul id="longer-roots" class="text-center"></ul>
+						</li>
+					</ol>
+					<button id="prev">◀️</button>
+					<button id="next">▶️</button>
+				</div>
 		</main>
 	</div>
 	<script type="module">
+		import {
+			go_to_adjacent,
+			track_offscreen_middle_column_element,
+		} from "./ui/update_carousel";
 		import update_roots from "./ui/update_roots";
 
 		update_roots();
 		document.getElementById("intransitive").addEventListener("click", () => update_roots("intransitive"));
 		document.getElementById("transitive").addEventListener("click", () => update_roots("transitive"));
+
+		track_offscreen_middle_column_element();
+		document.getElementById("prev").addEventListener("click", () => go_to_adjacent("left"));
+		document.getElementById("next").addEventListener("click", () => go_to_adjacent("right"));
 	</script>
 </body>
 </html>

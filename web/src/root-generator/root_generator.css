@@ -17,12 +17,12 @@ ol, ol li {
 
 #transitivity-row {
     display: flex;
-    margin-top: 2.5rem;
-    margin-bottom: 2.5rem;
+    margin-top: 2.25rem;
+    margin-bottom: 2.25rem;
 }
 
 #intransitive, #transitive {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
 }
 
 #intransitive:disabled, #transitive:disabled {
@@ -32,8 +32,63 @@ ol, ol li {
 }
 
 /* Carousel styling begins here. */
+/* Adapted from https://codepen.io/Schepp/pen/WNbQByE */
 
-.carousel-viewport {
+* {
+    --carousel-heading-size: 2rem;
+    --carousel-heading-margin-bottom: 2rem;
+}
+
+#carousel-viewport-container {
+    /* Anchor. */
+    position: relative;
+}
+
+#carousel-viewport {
     display: flex;
-    justify-content: space-between;
+    /* Scroll horizontally, but hide the scrollbar. */
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+}
+
+.carousel-column {
+    /* Show only 2 columns. */
+    flex: 0 0 50%;
+}
+
+.carousel-column h3 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    /* font-size: 0;
+    margin-bottom: 0; */
+}
+
+#prev {
+    left: 0;
+}
+
+#prev, #next {
+    width: fit-content;
+    line-height: 1;
+    font-size: 2rem;
+    user-select: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    /* Go to anchor and be vertically centred outside of normal document flow. */
+    position: absolute;
+    top: 50%;
+    /* Vertical centering compensation. "100%" means own size. */
+    transform: translate(0, calc(
+        - var(--carousel-heading-size) 
+        - var(--carousel-heading-margin-bottom) 
+        - 100%
+    ));
+
+}
+
+#next {
+    right: 0;
 }
