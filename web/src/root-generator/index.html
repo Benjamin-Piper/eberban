@@ -28,8 +28,12 @@
 					preferred for more common concepts.
 				</p>
 				<div id="transitivity-row">
-					<button id="intransitive">Intransitive</button>
-					<button id="transitive">Transitive</button>
+					<button id="intransitive">
+						Intransitive
+					</button>
+					<button id="transitive">
+						Transitive
+					</button>
 				</div>
 			</section>
 			<section>
@@ -54,5 +58,12 @@
 			</section>
 		</main>
 	</div>
+	<script type="module">
+		import update_roots from "./update_roots";
+
+		update_roots();
+		document.getElementById("intransitive").addEventListener("click", () => update_roots("intransitive"));
+		document.getElementById("transitive").addEventListener("click", () => update_roots("transitive"));
+	</script>
 </body>
 </html>
