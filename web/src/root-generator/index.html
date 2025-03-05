@@ -60,11 +60,22 @@
 					<button id="refresh">🔁</button>
 					<button id="next">▶️</button>
 				</div>
+				<ol class="carousel-nav">
+					<li>
+						<button id="left-most"></button>
+					</li>
+					<li>
+						<button id="middle-two"></button>
+					</li>
+					<li>
+						<button id="right-most"></button>
+					</li>
+				</ol>
 		</main>
 	</div>
 	<script type="module">
 		import {
-			go_to_adjacent,
+			column_view,
 			track_offscreen_middle_column_element,
 		} from "./ui/update_carousel";
 		import update_roots from "./ui/update_roots";
@@ -72,11 +83,22 @@
 		update_roots();
 		document.getElementById("intransitive").addEventListener("click", () => update_roots("intransitive"));
 		document.getElementById("transitive").addEventListener("click", () => update_roots("transitive"));
+		document.getElementById("refresh").addEventListener("click", () => update_roots());
+
+		document.getElementById("prev").addEventListener("click", () => column_view.prev());
+		document.getElementById("next").addEventListener("click", () => column_view.next());
+
+		document.getElementById("left-most").addEventListener("click", function() { 
+			return column_view.directly_to(this.id);
+		});
+		document.getElementById("middle-two").addEventListener("click", function() { 
+			return column_view.directly_to(this.id);
+		});
+		document.getElementById("right-most").addEventListener("click", function() { 
+			return column_view.directly_to(this.id);
+		});
 
 		track_offscreen_middle_column_element();
-		document.getElementById("prev").addEventListener("click", () => go_to_adjacent("left"));
-		document.getElementById("refresh").addEventListener("click", () => update_roots());
-		document.getElementById("next").addEventListener("click", () => go_to_adjacent("right"));
 	</script>
 </body>
 </html>
