@@ -99,3 +99,28 @@ ol, ol li {
 #next {
     right: 0;
 }
+
+.carousel-nav {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 2.5rem;
+}
+
+.carousel-nav button {
+    font-size: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-clip: content-box;
+    border: none;
+}
+
+.carousel-nav button.here {
+    background-image: none;
+}
+
+.carousel-nav button:hover,
+.carousel-nav button.here {
+    background-color: #333;
+    border: none;
+}

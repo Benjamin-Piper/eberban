@@ -1,14 +1,70 @@
+import { mod } from "../../scripts/utils";
+
+
+/* Column View */
+
+
+class Column_View {
+    #index = 0;
+    #views = [
+        // get_href is a function to always re-resolve offscreen_middle_column_element.
+        { name: "left-most", get_href: () => "short-roots" },
+        { name: "middle-two", get_href: () => offscreen_middle_column_element?.id },
+        { name: "right-most", get_href: () => "longer-roots" },
+    ];
+
+    constructor() {
+        this.#update();
+    }
+
+    directly_to(new_view_name) {
+        const new_index = this.#views.findIndex(({ name }) => name === new_view_name);
+        if (this.#index !== new_index) {
+            this.#index = new_index;
+            this.#update();
+        }
+    }
+
+    #get_current_view() {
+        return this.#views[this.#index];
+    }
+
+    go_to_current_view() {
+        // Using location.href as location.hash won't cause a scroll to be
+        // triggered when changed by the window.onresize function.
+        location.href = "#" + this.#get_current_view().get_href();
+    }
+
+    next() {
+        this.#index = mod(this.#index + 1, this.#views.length);
+        this.#update();
+    }
+    prev() {
+        this.#index = mod(this.#index - 1, this.#views.length);
+        this.#update();
+    }
+
+    #update() {
+        this.go_to_current_view();
+        for (const view of this.#views) {
+            const carousel_nav_button = document.getElementById(view.name);
+            if (view.name === this.#get_current_view().name) {
+                carousel_nav_button.classList.add("here");
+            } else {
+                carousel_nav_button.classList.remove("here");
+            }
+        }
+        
+    }
+}
+
+
 /* Globals */
 
 
-const adjacency_fns = [
-    go_to_left_most_columns,
-    go_to_middle_two_columns,
-    go_to_right_most_columns
-]
-let adjacency_index = 0;
-
 let offscreen_middle_column_element = null;
+
+export const column_view = new Column_View();
 
 
 /* Tracking */
@@ -40,36 +96,6 @@ export function track_offscreen_middle_column_element() {
     let onFinishedResizingId;
     window.onresize = function() {
         clearTimeout(onFinishedResizingId);
-        onFinishedResizingId = setTimeout(adjacency_fns[adjacency_index], 100);
+        onFinishedResizingId = setTimeout(column_view.go_to_current_view(), 100);
     }
-}
-
-
-/* Adjacency */
-
-// Using location.href as location.hash won't cause a scroll to be triggered
-// when changed by the window.onresize function.
-
-function go_to_left_most_columns() {
-    location.href = "#short-roots";
-}
-
-function go_to_middle_two_columns() {
-    location.href = "#" + offscreen_middle_column_element?.id;
-}
-
-function go_to_right_most_columns() {
-    location.href = "#longer-roots";
-}
-
-export function go_to_adjacent(direction) {
-    // Credit: https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
-    const mod = (n, modulus) => ((n % modulus) + modulus) % modulus;
-    if (direction === "left") {
-        adjacency_index = mod(adjacency_index - 1, adjacency_fns.length);
-
-    } else if (direction === "right") {
-        adjacency_index = mod(adjacency_index + 1, adjacency_fns.length);
-    }
-    adjacency_fns[adjacency_index]();
 }
