@@ -78,12 +78,15 @@
 			column_view,
 			track_offscreen_middle_column_element,
 		} from "./ui/update_carousel";
-		import update_roots from "./ui/update_roots";
+		import root_lists from "./ui/update_roots";
 
-		update_roots();
-		document.getElementById("intransitive").addEventListener("click", () => update_roots("intransitive"));
-		document.getElementById("transitive").addEventListener("click", () => update_roots("transitive"));
-		document.getElementById("refresh").addEventListener("click", () => update_roots());
+		document.getElementById("intransitive").addEventListener("click", function() {
+			return root_lists.switch_transitivity_to(this.id);
+		});
+		document.getElementById("transitive").addEventListener("click", function() {
+			return root_lists.switch_transitivity_to(this.id);
+		});
+		document.getElementById("refresh").addEventListener("click", () => root_lists.refresh());
 
 		document.getElementById("prev").addEventListener("click", () => column_view.prev());
 		document.getElementById("next").addEventListener("click", () => column_view.next());
