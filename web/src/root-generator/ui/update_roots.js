@@ -18,13 +18,15 @@ const is_intransitive = (s) => s === "intransitive";
 const is_transitive = (s) => s === "transitive";
 const is_valid = (s) => is_intransitive(s) || is_transitive(s);
 
-function get_transitivity(transitive_string) {
-    const tmp = [
+function set_transitivity(transitive_string) {
+    const transitivityList = [
         transitive_string,
+        localStorage.getItem("transitivity"),
         "intransitive", // Default to intransitive.
     ];
-    for (const transitivity of tmp) {
+    for (const transitivity of transitivityList) {
         if (is_valid(transitivity)) {
+            localStorage.setItem("transitivity", transitivity);
             return transitivity;
         }
     }
@@ -67,7 +69,7 @@ function update_root_list(root_list_id, get_random_root_fn) {
 
 
 export default function update_roots(transitive_string) {
-    const transitivity = get_transitivity(transitive_string);
+    const transitivity = set_transitivity(transitive_string);
     update_buttons(transitivity);
     if (is_transitive(transitivity)) {
         update_root_list("short-roots", get_random_three_letter_transitive_root);

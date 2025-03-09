@@ -5,7 +5,7 @@ import { mod } from "../../scripts/utils";
 
 
 class Column_View {
-    #index = 0;
+    #index;
     #views = [
         // get_href is a function to always re-resolve offscreen_middle_column_element.
         { name: "left-most", get_href: () => "short-roots" },
@@ -14,13 +14,19 @@ class Column_View {
     ];
 
     constructor() {
+        const cached_index = localStorage.getItem("column-view-index");
+        if (cached_index) {
+            this.#index = parseInt(cached_index);
+        } else {
+            this.#index = 0;
+        }
         this.#update();
     }
 
     directly_to(new_view_name) {
         const new_index = this.#views.findIndex(({ name }) => name === new_view_name);
         if (this.#index !== new_index) {
-            this.#index = new_index;
+            this.#set_index(new_index);
             this.#update();
         }
     }
@@ -36,11 +42,11 @@ class Column_View {
     }
 
     next() {
-        this.#index = mod(this.#index + 1, this.#views.length);
+        this.#set_index(mod(this.#index + 1, this.#views.length));
         this.#update();
     }
     prev() {
-        this.#index = mod(this.#index - 1, this.#views.length);
+        this.#set_index(mod(this.#index - 1, this.#views.length));
         this.#update();
     }
 
@@ -54,7 +60,11 @@ class Column_View {
                 carousel_nav_button.classList.remove("here");
             }
         }
-        
+    }
+
+    #set_index(new_index) {
+        this.#index = new_index;
+        localStorage.setItem("column-view-index", new_index);
     }
 }
 
@@ -62,7 +72,10 @@ class Column_View {
 /* Globals */
 
 
-let offscreen_middle_column_element = null;
+// The initial value of this variable is purely so that Column_View can update
+// when it is constructed. It will be quickly reassigned afterwards via the
+// IntersectionObserver.
+let offscreen_middle_column_element = { id: "long-roots" };
 
 export const column_view = new Column_View();
 
@@ -77,6 +90,7 @@ export function track_offscreen_middle_column_element() {
         for (const entry of entries) {
             if (!entry.isIntersecting) {
                 offscreen_middle_column_element = entry.target;
+                return;
             }
         }
     }
