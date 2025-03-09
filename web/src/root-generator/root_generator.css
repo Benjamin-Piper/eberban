@@ -1,6 +1,6 @@
-/*               */
+/*                */
 /* Mobile styles. */
-/*               */
+/*                */
 
 h1 {
     font-size: 2.5rem;
@@ -103,7 +103,7 @@ ol, ol li {
 .carousel-nav {
     display: flex;
     justify-content: space-evenly;
-    margin-top: 2.5rem;
+    margin-top: 3.5rem;
 }
 
 .carousel-nav button {
