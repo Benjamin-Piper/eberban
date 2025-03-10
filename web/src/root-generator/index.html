@@ -74,11 +74,12 @@
 		</main>
 	</div>
 	<script type="module">
-		import {
-			column_view,
-			track_offscreen_middle_column_element,
-		} from "./ui/update_carousel";
+		import column_view from "./ui/update_carousel";
 		import root_lists from "./ui/update_roots";
+
+
+		/* Root Lists */
+
 
 		document.getElementById("intransitive").addEventListener("click", function() {
 			return root_lists.switch_transitivity_to(this.id);
@@ -87,6 +88,10 @@
 			return root_lists.switch_transitivity_to(this.id);
 		});
 		document.getElementById("refresh").addEventListener("click", () => root_lists.refresh());
+
+
+		/* Column View */
+
 
 		document.getElementById("prev").addEventListener("click", () => column_view.prev());
 		document.getElementById("next").addEventListener("click", () => column_view.next());
@@ -100,8 +105,6 @@
 		document.getElementById("right-most").addEventListener("click", function() { 
 			return column_view.directly_to(this.id);
 		});
-
-		track_offscreen_middle_column_element();
 	</script>
 </body>
 </html>
