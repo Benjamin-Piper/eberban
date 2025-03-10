@@ -3,10 +3,7 @@ import store from "store2";
 import { mod } from "../../scripts/utils";
 
 
-/* Column View */
-
-
-class Column_View {
+class Carousel {
     #index;
     // The initial value of this variable is purely so that Column_View can update
     // when it is constructed. It will be quickly reassigned afterwards via the
@@ -120,5 +117,5 @@ class Column_View {
 
 
 /* ENTRY */
-const column_view = new Column_View();
-export default column_view;
+const carousel = new Carousel();
+export default carousel;

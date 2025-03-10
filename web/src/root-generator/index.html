@@ -74,8 +74,8 @@
 		</main>
 	</div>
 	<script type="module">
-		import column_view from "./ui/update_carousel";
-		import root_lists from "./ui/update_roots";
+		import carousel from "./ui/carousel";
+		import root_lists from "./ui/root_lists";
 
 
 		/* Root Lists */
@@ -93,17 +93,17 @@
 		/* Column View */
 
 
-		document.getElementById("prev").addEventListener("click", () => column_view.prev());
-		document.getElementById("next").addEventListener("click", () => column_view.next());
+		document.getElementById("prev").addEventListener("click", () => carousel.prev());
+		document.getElementById("next").addEventListener("click", () => carousel.next());
 
 		document.getElementById("left-most").addEventListener("click", function() { 
-			return column_view.directly_to(this.id);
+			return carousel.directly_to(this.id);
 		});
 		document.getElementById("middle-two").addEventListener("click", function() { 
-			return column_view.directly_to(this.id);
+			return carousel.directly_to(this.id);
 		});
 		document.getElementById("right-most").addEventListener("click", function() { 
-			return column_view.directly_to(this.id);
+			return carousel.directly_to(this.id);
 		});
 	</script>
 </body>
