@@ -1,3 +1,5 @@
+import store from "store2";
+
 import get_random_roots from "../logic/generator";
 import {
     get_random_three_letter_intransitive_root,
@@ -33,47 +35,82 @@ class Root_Lists {
         this.#render_roots();
     }
 
-
     /* Roots */
 
-
     #initialise_root_lists() {
-        const cached_root_lists = JSON.parse(localStorage.getItem("root-lists"));
-        if (cached_root_lists) {
-            this.#root_lists = cached_root_lists;
+        if (store.has("root-lists")) {
+            this.#root_lists = store.get("root-lists", (key, value) => {
+                if (key === "fn") {
+                    // JSON neither serialises nor parses functions.
+                    // So we look it up by name when we parse the root lists
+                    // again.
+                    return ({
+                        get_random_three_letter_intransitive_root,
+                        get_random_three_letter_transitive_root,
+                        get_random_four_letter_intransitive_root,
+                        get_random_four_letter_transitive_root,
+                        get_random_five_letter_intransitive_root,
+                        get_random_five_letter_transitive_root,
+                        get_random_six_letter_intransitive_root,
+                        get_random_six_letter_transitive_root,
+                    })[value]
+                }
+                return value;
+            });
+            console.log(this.#root_lists)
             return;
         }
         this.#root_lists = [
             {
                 id: "short-roots",
-                roots: [],
-                transitive_fn: get_random_three_letter_transitive_root,
-                intransitive_fn: get_random_three_letter_intransitive_root,
+                intransitive: {
+                    roots: [],
+                    fn: get_random_three_letter_intransitive_root,
+                },
+                transitive: {
+                    roots: [],
+                    fn: get_random_three_letter_transitive_root,
+                },
             },
             {
                 id: "medium-roots",
-                roots: [],
-                transitive_fn: get_random_four_letter_transitive_root,
-                intransitive_fn: get_random_four_letter_intransitive_root,
+                intransitive: {
+                    roots: [],
+                    fn: get_random_four_letter_intransitive_root,
+                },
+                transitive: {
+                    roots: [],
+                    fn: get_random_four_letter_transitive_root,
+                },
             },
             {
                 id: "long-roots",
-                roots: [],
-                transitive_fn: get_random_five_letter_transitive_root,
-                intransitive_fn: get_random_five_letter_intransitive_root,
+                intransitive: {
+                    roots: [],
+                    fn: get_random_five_letter_intransitive_root,
+                },
+                transitive: {
+                    roots: [],
+                    fn: get_random_five_letter_transitive_root,
+                },
             },
             {
                 id: "longer-roots",
-                roots: [],
-                transitive_fn: get_random_six_letter_transitive_root,
-                intransitive_fn: get_random_six_letter_intransitive_root,
+                intransitive: {
+                    roots: [],
+                    fn: get_random_six_letter_intransitive_root,
+                },
+                transitive: {
+                    roots: [],
+                    fn: get_random_six_letter_transitive_root,
+                },
             },
         ];
-        this.#update_roots();
+        this.#update_roots("intransitive", "transitive");
     }
 
     refresh() {
-        this.#update_roots();
+        this.#update_roots(this.#transitivity);
         this.#render_roots();
     }
 
@@ -89,27 +126,26 @@ class Root_Lists {
             column_element.append(...roots.map(format_root));
         }
         for (const root_list of this.#root_lists) {
-            render_column_element(root_list.id, root_list.roots);
-        }
+            render_column_element(root_list.id, root_list[this.#transitivity].roots);
+        } 
     }
     
-    #update_roots() {
+    #update_roots(...transitivities) {
         for (const root_list of this.#root_lists) {
-            if (is_transitive(this.#transitivity)) {
-                root_list.roots = get_random_roots(root_list.transitive_fn);
-            } else {
-                root_list.roots = get_random_roots(root_list.intransitive_fn);
+            for (const transitivity of transitivities) {
+                root_list[transitivity].roots = get_random_roots(root_list[transitivity].fn);
             }
         }
+        store.set("root-lists", this.#root_lists, (key, value) => {
+            return key === "fn" ? value.name : value;
+        });
     }
-
 
     /* Transitivity */
 
-
     #initialise_transitivity() {
         const transitivity_list = [
-            localStorage.getItem("transitivity"),
+            store.get("transitivity"),
             "intransitive", // Default to intransitive.
         ];
         for (const transitivity of transitivity_list) {
@@ -122,10 +158,9 @@ class Root_Lists {
 
     #set_transitivity(new_transitivity) {
         this.#transitivity = new_transitivity;
-        localStorage.setItem("transitivity", new_transitivity);
+        store.set("transitivity", new_transitivity);
     }
 
-    // TODO perhaps rename this??
     switch_transitivity_to(new_transitivity) {
         this.#set_transitivity(new_transitivity);
         this.#render_transitivity();
