@@ -1,0 +1,36 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  
+  workflow_dispatch:
+
+jobs:
+  run-build:
+    uses: ./.github/workflows/build.yml
+
+  deploy:
+    needs: run-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove extraneous files
+        run: |
+          rm -f .gitignore
+          rm -f dictionary/package.json
+          rm -rf web/
+
+      - name: Deploy
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git switch -c gh-pages --track origin/gh-pages
+          git add -A
+          git commit -m "Update GitHub pages"
+          git push
