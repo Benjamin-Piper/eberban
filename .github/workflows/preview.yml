@@ -1,0 +1,26 @@
+name: Preview deployment
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+concurrency: preview-${{ github.ref }}
+
+jobs:
+    run-build:
+      uses: ./.github/workflows/build.yml
+  
+    deploy:
+      needs: run-build
+      runs-on: ubuntu-latest
+  
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+  
+        - name: Deploy preview
+          uses: rossjrw/pr-preview-action@v1
+  
