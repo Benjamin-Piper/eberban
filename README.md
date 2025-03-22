@@ -1,4 +1,4 @@
-# eberban
+# eberban (tmp edit #1)
 
 __Eberban__ is a [logical] [constructed language] aimed to satisfy the
 following goals :
