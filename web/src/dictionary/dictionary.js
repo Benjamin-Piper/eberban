@@ -1,4 +1,7 @@
+
 import dictionary from "../../../dictionary/en.yaml";
+import { html, render } from "../vite-plugins/lit-html";
+import { template as entry_template } from "./entry.template.html";
 import { compare_words, compare_words_biased  } from "./compare_words";
 
 const ignored = [ '_spelling', '_cardinal', '_number', 'i', 'e', 'u' ];
@@ -51,7 +54,7 @@ words_sorted.forEach((word) => {
 		entry.tags.unshift("transitive");
 	}
 
-	entry.html_output = html_word_entry(word, entry);
+	entry.html_vars = html_word_entry(word, entry);
 });
 
 const spelling_words_sorted = Object.keys(dictionary["_spelling"]).sort(compare_words);
@@ -73,7 +76,7 @@ spelling_words_sorted.forEach((word) => {
 
 	entry.links.push(["icon-book", "Quotes", "https://eberban.github.io/eberban/books/refgram/book/grammar/quotes.html"]);
 
-	entry.html_output = html_word_entry(word, entry);
+	entry.html_vars = html_word_entry(word, entry);
 });
 
 export function count_word_types() {
@@ -92,9 +95,6 @@ export function count_word_types() {
 
 function html_word_entry(word, entry) {
 	let extra_css_class = entry.extra_css_class || "";
-	let entry_css_classes = `dictionary-entry ${extra_css_class}`;
-
-	let family_button = `<a href="#@${entry.family}" class="family">${entry.family}</a>`;
 
 	let word_display = word;
 	if (entry.family == 'C') {
@@ -160,30 +160,19 @@ function html_word_entry(word, entry) {
 		see_also += '.</p>';
 	}
 
-	let permalink = `<p data-tooltip="Link with a unique ID that will remain the same even if the Eberban
-	word changes">
-	<strong>
-	<a href=#${entry.id}>Permalink</a>
-	</strong>
-	</p>`;
-
-	let output = `<details class="${entry_css_classes}">
-		<summary>
-			<span class="word">${word_display}</span>
-			${family_button}
-			<span class="short"><i>${entry.gloss}</i>${short_display}</span>
-		</summary>
-		<div class="dictionary-details">
-			${notes_display}
-			${see_also}
-			${tags}
-			${links}
-			${definition}
-			${permalink}
-		</div>
-	</details>`;
-
-	return output;
+	return {
+		extra_css_class,
+		word_display,
+		family: entry.family,
+		gloss: entry.gloss,
+		short_display,
+		notes_display,
+		see_also,
+		tags,
+		links,
+		definition,
+		id,
+	};
 }
 
 function renderParagraphs(text) {
@@ -317,13 +306,20 @@ function may_insert_entry(results, filters, word, entry) {
 		}
 	}
 
+	// TODO fix this up. replace it with https://github.com/posthtml/posthtml-expressions
+
+	const rendered_entry = render(entry_template({
+		values: entry.html_vars,
+		html: (s) => `<div id="search-stats">${results.length} results found.</div>` + s,
+}), document.getElementById("dictionary"))
+
 	if (exact_match) {
 		// Exact match => first entry
 		// output = entry.html_output + output;
-		results.unshift(entry.html_output);
+		results.unshift(rendered_entry);
 	} else {
 		// output += entry.html_output;
-		results.push(entry.html_output);
+		results.push(rendered_entry);
 	}
 }
 
@@ -343,11 +339,5 @@ export function html_dictionary(filters) {
 
 		may_insert_entry(results, filters, word, dictionary["_spelling"][word]);
 	});
-
-	output += `<div id="search-stats">${results.length} results found.</div>`;
-
-	results.forEach((entry) => output += entry);
-
-	return output;
 }
 
