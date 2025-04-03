@@ -15,7 +15,7 @@ const AppendTrailingUrlSlash = () => {
         apply: "serve",
         enforce: "post",
         configureServer(server) {
-            server.middlewares.use((req, _, next) => {
+            server.middlewares.use((req, res, next) => {
                 if (!req.url) {
                     return next();
                 }
@@ -34,7 +34,10 @@ const AppendTrailingUrlSlash = () => {
                     "g",
                 );
                 if (regexp.test(req.url)) {
-                    req.url += "/";
+                    const MOVED_PERMANENTLY = 301;
+                    res.writeHead(MOVED_PERMANENTLY, { Location: req.url + "/" });
+                    res.end();
+                    return;
                 }
                 next();
             });
