@@ -1,7 +1,7 @@
 import { camxes } from '../../grammar/eberban';
 export { postprocessing } from './process_parse_tree';
 
-import { remove_morphology, remove_spaces } from '../utils';
+import { remove_morphology, remove_spaces } from '../utils-legacy';
 import { simplifyTree } from './simplify_tree';
 import dictionary from '../../../../dictionary/en.yaml';
 

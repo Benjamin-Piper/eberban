@@ -1,6 +1,6 @@
 import store from "store2";
 
-import { mod } from "../../scripts/utils";
+import { mod } from "../../scripts/utils-legacy";
 
 
 class Carousel {
