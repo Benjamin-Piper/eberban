@@ -1,4 +1,4 @@
-import { get_random_item } from "../../scripts/utils";
+import { get_random_item } from "../../scripts/utils-legacy";
 import {
     all_initial_pairs,
     all_medial_pairs,
