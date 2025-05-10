@@ -1467,7 +1467,7 @@ ce:
   short: "[E:blu ecema] is the string/list of letters encoded by [quote]."
   gloss: "#spelling-start"
   notes: |
-    Search __@S__ to only show spelling units.
+    Search ___@S___ to only show spelling units.
   links:
     - ["icon-book", "Quotes", https://eberban.github.io/eberban/books/refgram/book/grammar/quotes.html]
 ceu:

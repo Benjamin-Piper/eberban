@@ -69,7 +69,7 @@ export default defineConfig({
             },
         },
     },
-    plugins: [AppendTrailingUrlSlash(), Preact(), ViteYaml()],
+    plugins: [AppendTrailingUrlSlash(), Preact({ reactAliasesEnabled: true }), ViteYaml()],
     // The root is specified within package.json scripts via Vite CLI.
     publicDir: "../images",
 });
