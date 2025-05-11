@@ -22,9 +22,9 @@ import {
 
 
 
-// function DictLink({ children }) {
-//     return <a href={`#${children}`}>{children}</a>;
-// }
+function DictLink({ children }) {
+    return <a href={`#${children}`}>{children}</a>;
+}
 
 
 /* 
@@ -65,6 +65,42 @@ function definition_quote_kit() {
         regex_string: in_quote(group(fewest_positive_number_of(any))),
         replacer: (_, content) => <code>{content}</code>,
     };
+}
+
+function eberban_quote_kit() {
+    const in_quote = (s) => "{" + s + "}";
+    return {
+        keep_children_as_string: true,
+        regex_string: in_quote(group(fewest_positive_number_of(any))),
+        replacer: (_, content) => {
+            console.log(content)
+            const { regex_string, replacer } = content_kit();
+            return <span class="ebb-quote">{the_thing(content, regex_string, replacer)}</span>;
+        },  
+    };
+    function content_kit() {
+        // console.log("{al X} can be modeled as being syntaxic sugar for {oni <e ze al> !X ol !P be mi <en al ol sai> <e ze a>}.")
+        // console.log(content)
+        const as_one_link = (s) => "<" + s + ">";
+
+        // (/(?<!!\w*)\w+|<((?:\w+\s?)+?)>/g)]
+        const simple_word_link = group(
+            does_not_begin_with("!" + any_number_of(word_char)) + one_or_more(word_char)
+        );  
+        // <(  (?:  \w+\s?  )+?  )>
+        // ^ compound
+        const compound_word_link = as_one_link(group(
+            fewest_positive_number_of(non_capturing_group(
+                one_or_more(word_char) + optional(space)
+            ))
+        ));
+        console.log(any_of(simple_word_link, compound_word_link))
+        return {
+            regex_string: any_of(simple_word_link, compound_word_link),
+            replacer: (_, link) => <DictLink>{(() => {console.log(link); return link})()}</DictLink>,
+            // keep_children_as_string: true,
+        };
+    }
 }
 
 // function eberban_quote_kit() {
@@ -146,7 +182,7 @@ export function markup_inline(text) {
         bold_kit, // todo write about this in commit msg. order no matter now :)
         italics_kit,
         definition_quote_kit,
-        // eberban_quote_kit,
+        eberban_quote_kit,
         // place_kit,
     ];
     for (const kit of markup_kits) {
