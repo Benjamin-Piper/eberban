@@ -26,7 +26,7 @@ export default function the_thing(
     keep_children_as_string: boolean,
 ) {
     const string_input = the_thing_0(input);
-    console.log(string_input)
+    // console.log(string_input)
     // the_thing_1 TODO rename and fix up this comment
     //the_thing_1 uses string.matchAll which requires a global regex.
     // however. using a global regex with regex.test advances lastIndex, thus produces
@@ -55,7 +55,7 @@ function the_thing_1(input: string, global_regex: RegExp, replacer: Replacer, ke
     const replacements: Replacement[] = [];
     const matched = input.matchAll(global_regex);
     for (const match_array of matched) {
-        console.log(match_array)
+        // console.log(match_array)
         const whole_string = match_array[0];
         // todo format this. Not every capture group matches, but replacer expects strings so we filter out undefined. User can try and get capture group not in array from spread operator and this works just fine. TODO check if this works just fine!
         const groups = match_array.slice(1).filter((s) => s !== undefined);

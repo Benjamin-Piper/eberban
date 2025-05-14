@@ -18,17 +18,17 @@ import {
 } from "../scripts/regex";
 
 
-/* HELPERS */
-
-
-
 function DictLink({ children }) {
     return <a href={`#${children}`}>{children}</a>;
 }
 
 
 /* 
-    Kit :: () -> { regex_string: string, replacer: string -> JSX, keep_children_as_string: boolean? }
+    Kit :: () -> { 
+        keep_children_as_string: boolean?
+        regex_string: string
+        replacer: (...string[]) -> JSX
+    }
 
     Kits are how we extend markup syntax. They're written as functions for
     readability.
@@ -73,103 +73,55 @@ function eberban_quote_kit() {
         keep_children_as_string: true,
         regex_string: in_quote(group(fewest_positive_number_of(any))),
         replacer: (_, content) => {
-            console.log(content)
             const { regex_string, replacer } = content_kit();
-            return <span class="ebb-quote">{the_thing(content, regex_string, replacer)}</span>;
+            let rendered_content = the_thing(content, regex_string, replacer);
+            rendered_content = the_thing(rendered_content, "!", () => "");
+            return <span class="ebb-quote">{rendered_content}</span>;
         },  
     };
     function content_kit() {
-        // console.log("{al X} can be modeled as being syntaxic sugar for {oni <e ze al> !X ol !P be mi <en al ol sai> <e ze a>}.")
-        // console.log(content)
         const as_one_link = (s) => "<" + s + ">";
-
-        // (/(?<!!\w*)\w+|<((?:\w+\s?)+?)>/g)]
         const simple_word_link = group(
-            does_not_begin_with("!" + any_number_of(word_char)) + one_or_more(word_char)
+            does_not_begin_with("!" + any_number_of(word_char)) +
+            one_or_more(word_char)
         );  
-        // <(  (?:  \w+\s?  )+?  )>
-        // ^ compound
         const compound_word_link = as_one_link(group(
             fewest_positive_number_of(non_capturing_group(
                 one_or_more(word_char) + optional(space)
             ))
         ));
-        console.log(any_of(simple_word_link, compound_word_link))
         return {
             regex_string: any_of(simple_word_link, compound_word_link),
-            replacer: (_, link) => <DictLink>{(() => {console.log(link); return link})()}</DictLink>,
-            // keep_children_as_string: true,
+            replacer: (_, link) => <DictLink>{link}</DictLink>,
         };
     }
 }
 
-// function eberban_quote_kit() {
-//     function whole() {
-//         const in_quote = (s) => "{" + s + "}";
-//         return {
-//             regex: new RegExp(group(in_quote(fewest_positive_number_of(any))), "g"),
-//             replacer: (string) => {
-//                 const kit = content_kit();
-//                 let content = remove_delimiters(string);
-//                 content = reactStringReplace(content, kit.regex, kit.replacer);
-//                 content = reactStringReplace(content, "!", () => "");
-//                 return <span class="ebb-quote">{content}</span>;
-//             },
-//         };
-//     };
-//     function content_kit() {
-//         const as_one_link = (s) => "<" + s + ">";
-//         const simple_word_link = 
-//             does_not_begin_with("!" + any_number_of(word_char)) + one_or_more(word_char);
-//         const compound_word_link = as_one_link(non_capturing_group(
-//             fewest_positive_number_of(
-//                 non_capturing_group(one_or_more(word_char) + optional(space)),
-//             ),
-//         ));
-//         return {
-//             regex: new RegExp(group(any_of(simple_word_link, compound_word_link)), "g"),
-//             replacer: (string) => {
-//                 let output = string;
-//                 if (new RegExp(compound_word_link).test(output)) {
-//                     output = remove_delimiters(output);
-//                 }
-//                 return <DictLink>{output}</DictLink>;
-//             }
-//         };
-//     };
-//     return whole();
-// }
-
-// function place_kit() {
-//     function whole() {
-//         const in_brackets = (s) => "\\[" + s + "\\]";
-//         const place = set("E", "A", "O", "U");
-//         const arg = non_capturing_group(":" + fewest_positive_number_of(any));
-//         return {
-//             regex: new RegExp(group(in_brackets(place + optional(arg))), "g"),
-//             replacer: (string) => {
-//                 const [_, left_bracket, content, right_bracket] = string.match(
-//                     new RegExp(group("\\[") + group(one_or_more(any)) + group("\\]"))
-//                 );
-//                 const kit = content_kit();
-//                 return (
-//                     <span class="label label-info place">
-//                         <span class="hidden">{left_bracket}</span>
-//                         {reactStringReplace(content, kit.regex, kit.replacer)}
-//                         <span class="hidden">{right_bracket}</span>
-//                     </span>
-//                 );
-//             },
-//         };
-//     };
-//     function content_kit() {
-//         return {
-//             regex: new RegExp(group(word_char + one_or_more(word_char)), "g"),
-//             replacer: (s) => <DictLink>{s}</DictLink>,
-//         };
-//     };
-//     return whole();
-// }
+function place_kit() {
+    const in_brackets = (s) => "\\[" + (s) + "\\]";
+    const place = group(set("E", "A", "O", "U"));
+    const arg = optional(group(":" + fewest_positive_number_of(any)));
+    return {
+        regex_string: in_brackets(place + arg),
+        replacer: (_, place, arg) => {
+            const { regex_string, replacer } = arg_kit();
+            const arg_with_links = the_thing(arg ?? "", regex_string, replacer);
+            return (
+                <span class="label label-info place">
+                    <span class="hidden">{"["}</span>
+                    {place}{arg_with_links}
+                    <span class="hidden">{"]"}</span>
+                </span>
+            )
+        }
+    }
+    function arg_kit() {
+        return {
+            regex_string: group(word_char + one_or_more(word_char)),
+            replacer: (s) => <DictLink>{s}</DictLink>,
+        };
+    }
+}
 
 
 /* ENTRY */
@@ -183,11 +135,10 @@ export function markup_inline(text) {
         italics_kit,
         definition_quote_kit,
         eberban_quote_kit,
-        // place_kit,
+        place_kit,
     ];
     for (const kit of markup_kits) {
         const { keep_children_as_string, regex_string, replacer } = kit();
-        // console.log(output)
         output = the_thing(output, regex_string, replacer, keep_children_as_string);
     }
     return output;
