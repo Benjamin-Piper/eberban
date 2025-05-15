@@ -74,8 +74,11 @@ function eberban_quote_kit() {
         regex_string: in_quote(group(fewest_positive_number_of(any))),
         replacer: (_, content) => {
             const { regex_string, replacer } = content_kit();
+            console.log("-",content)
             let rendered_content = markup_to_jsx_child(content, regex_string, replacer);
+            console.log("--", rendered_content)
             rendered_content = markup_to_jsx_child(rendered_content, "!", () => "");
+            console.log("---", rendered_content);
             return <span class="ebb-quote">{rendered_content}</span>;
         },  
     };

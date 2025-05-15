@@ -19,7 +19,7 @@ type Global_Regex = RegExp;
 
 
 export default function markup_to_jsx_child(
-    input: JSX_Child,
+    input: JSX_Child | JSX_Child[],
     regex_string: string,
     replacer: Replacer,
     keep_children_as_string: boolean,
@@ -41,17 +41,17 @@ export default function markup_to_jsx_child(
     return replace_string_with_jsx(string_input, replacements);
 }
 
-function jsx_children_to_string(input: JSX_Child): string {
-    if (typeof input === "string") {
-            return input;
+function jsx_children_to_string(children: JSX_Child | JSX_Child[]): string {
+    const format = (child: JSX_Child) => {
+        if (typeof child === "string") {
+            return child;
         }
-    return render_to_string(input);
-    // return input.map((child) => {
-    //     if (typeof child === "string") {
-    //         return child;
-    //     }
-    //     return render_to_string(child);
-    // }).reduce((acc, curr) => acc + curr, "");
+        return render_to_string(child);      
+    };
+    if (Array.isArray(children)) {
+        return children.map(format).reduce((acc, curr) => acc + curr, "");
+    }
+    return format(children);
 }
 
 function make_replacements(
@@ -69,8 +69,16 @@ function make_replacements(
         const whole_string = match_array[0];
         // Not every capture group of the regex will match. We filter out failed
         // captures so that the replacer() only gets the captured strings.
+        // console.log(match_array.slice(1))
         const captured_strings = match_array.slice(1).filter((x) => x !== undefined);
         const jsx = (() => {
+            // console.log(keep_children_as_string)
+            // console.log(regex, keep_children_as_string);
+            // console.log(whole_string, captured_strings);
+            // console.log(replacer(htmr(whole_string), ...captured_strings.map(s => htmr(s))));
+            // captured_strings.forEach(console.log)
+            console.log(match_array.index)
+            console.log(whole_string, whole_string.length, captured_strings, keep_children_as_string)
             if (keep_children_as_string) {
                 return replacer(whole_string, ...captured_strings);
             }
@@ -85,39 +93,23 @@ function make_replacements(
     return replacements;
 }
 
-function replace_string_with_jsx(input: string, replacements: Replacement[]): JSX_Child {
-    // Considered alternative: returning JSX_Child[].
-    // React will render this but 
-    // This won't work because htmr() trims its string input. So the string 
-    // This function relies on htmr() to return JSX.Element. Because htmr()
-    // trims its string input, 
-    // todo explain that since htmr trims, we don't do child by child, but rather the whole damn ting
-    
-    let output = "";
-    let last_index = 0;
+function replace_string_with_jsx(input: string, replacements: Replacement[]): JSX_Child[] {
+   let output: JSX_Child[] = [];
+   let last_index = 0;
     for (const replacement of replacements) {
         if (last_index < replacement.begin_index) {
-            output += input.substring(last_index, replacement.begin_index);
+            output.push(htmr(input.substring(last_index, replacement.begin_index)));
         }
-        output += render_to_string(replacement.jsx)
+        output.push(replacement.jsx);
         last_index = replacement.end_index + 1;
     }
     if (last_index <= (input.length - 1)) {
-        output += input.substring(last_index);
+        output.push(htmr(input.substring(last_index)));
     }
-    return htmr(output);
-    
-//    let output: JSX_Child[] = [];
-//    let last_index = 0;
-//     for (const replacement of replacements) {
-//         if (last_index < replacement.begin_index) {
-//             output.push(input.substring(last_index, replacement.begin_index));
-//         }
-//         output.push(replacement.jsx);
-//         last_index = replacement.end_index + 1;
-//     }
-//     if (last_index <= (input.length - 1)) {
-//         output.push(input.substring(last_index));
-//     }
     return output;
 }
+
+// ah, finally
+// OK so why doesn't array work?
+// well, since we render everything to string so that regex becomes easier (can't do string.matchAll otherwise), we'll need to hydrate everything back again
+// ok, fine. but when we do that, htmr trims. Not good. inconsistent behavoiur
