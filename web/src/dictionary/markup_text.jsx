@@ -1,4 +1,4 @@
-import the_thing from "./the-thing";
+import markup_to_jsx_child from "./markup_to_jsx_child";
 import {
     any,
     any_of,
@@ -74,8 +74,8 @@ function eberban_quote_kit() {
         regex_string: in_quote(group(fewest_positive_number_of(any))),
         replacer: (_, content) => {
             const { regex_string, replacer } = content_kit();
-            let rendered_content = the_thing(content, regex_string, replacer);
-            rendered_content = the_thing(rendered_content, "!", () => "");
+            let rendered_content = markup_to_jsx_child(content, regex_string, replacer);
+            rendered_content = markup_to_jsx_child(rendered_content, "!", () => "");
             return <span class="ebb-quote">{rendered_content}</span>;
         },  
     };
@@ -100,12 +100,14 @@ function eberban_quote_kit() {
 function place_kit() {
     const in_brackets = (s) => "\\[" + (s) + "\\]";
     const place = group(set("E", "A", "O", "U"));
-    const arg = optional(group(":" + fewest_positive_number_of(any)));
+    const arg = group(":" + fewest_positive_number_of(any));
     return {
-        regex_string: in_brackets(place + arg),
+        regex_string: in_brackets(place + optional(arg)),
         replacer: (_, place, arg) => {
             const { regex_string, replacer } = arg_kit();
-            const arg_with_links = the_thing(arg ?? "", regex_string, replacer);
+            // arg is a capture group that's optional. It won't always show up
+            // in the captured strings of replacer.
+            const arg_with_links = markup_to_jsx_child(arg ?? "", regex_string, replacer);
             return (
                 <span class="label label-info place">
                     <span class="hidden">{"["}</span>
@@ -131,7 +133,7 @@ export function markup_inline(text) {
     let output = text;
     const markup_kits = [
         break_kit,
-        bold_kit, // todo write about this in commit msg. order no matter now :)
+        bold_kit, // todo write about this in commit msg. order no matter now :) todo this file is typescript
         italics_kit,
         definition_quote_kit,
         eberban_quote_kit,
@@ -139,7 +141,12 @@ export function markup_inline(text) {
     ];
     for (const kit of markup_kits) {
         const { keep_children_as_string, regex_string, replacer } = kit();
-        output = the_thing(output, regex_string, replacer, keep_children_as_string);
+        output = markup_to_jsx_child(
+            output,
+            regex_string,
+            replacer,
+            keep_children_as_string
+        );
     }
     return output;
 }
