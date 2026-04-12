@@ -1,4 +1,4 @@
-name: Check dictionary IDs are unique
+name: Run dictionary checks
 
 on:
   push:
@@ -24,4 +24,4 @@ jobs:
 
       - name: Check dictionary IDs are unique
         run: |
-          node dictionary/check_word_ids.js dictionary/en.yaml
+          node dictionary/checks.js dictionary/en.yaml
